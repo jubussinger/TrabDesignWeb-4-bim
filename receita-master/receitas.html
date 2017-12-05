@@ -1,0 +1,118 @@
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="./css/receita.css" />
+	<link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Arapey|Niconne|Patua+One" rel="stylesheet">
+	<script type="text/javascript" src="./js/jquery.min.js"></script>
+	<script>
+	$(function(){
+		var servico= "http://botanicapp.com.br/receitas_teste.php";
+		
+		var $xhr= $.get(servico);
+		
+		$xhr.done(function(data){
+			var receitas= JSON.parse(data);
+			$.each(receitas, function(indice, receita){
+				
+				var $ulPreparo = $("<ul />");
+				$.each(receita.ingredientes,function(ind, ing){
+					$ulPreparo.append($("<li/>").text(ing))
+				});
+
+				var $olPreparo = $("<ol />");
+				$.each(receita.preparo,function(ind, prep){
+					$olPreparo.append($("<li/>").text(prep))
+				});
+				
+				$("#lista")
+					.append($("<p/>").text(receita.nome)
+						.addClass("titulo"))
+					.append($("<img/>").attr("src",receita.foto)
+						.addClass("fotos"))
+					.append($("<p/>").text(receita.descricao)
+						.addClass("descricao"))
+					.append($("<buttom/>").text("Veja Mais")
+						.addClass("mostrarMais" + indice))
+					.append($("<div/>")
+						.attr("id", "preparo" + indice)
+						.append($ulPreparo
+							.addClass("ingrediente" + indice))
+						.append($olPreparo
+							.addClass("preparo" + indice))	
+					)
+						
+					.append($("<buttom/>").text("Ocultar")
+						.addClass("mostrarMenos" + indice))
+
+					
+				
+				$("#preparo" + indice).hide();
+				$(".mostrarMenos" + indice).hide();
+				
+				$.each(receitas, function(indice, receita){
+					$("#lista").on("click", ".mostrarMais" + indice, function(){
+						$("#preparo" + indice).show();
+						$(".mostrarMenos" + indice).show();
+						$(".mostrarMais" + indice).hide();
+							
+					});
+					$("#lista").on("click", ".mostrarMenos" + indice, function(){
+						$("#preparo" + indice).hide();
+						$(".mostrarMenos" + indice).hide();
+						$(".mostrarMais" + indice).show();
+
+					
+					});
+					$("#lista").on("mouseover", ".mostrarMenos" + indice, function(){
+						$(".mostrarMenos" + indice)
+							.css("text-decoration","underline")
+							.css("color","white")
+					
+					});
+					$("#lista").on("mouseover", ".mostrarMais" + indice, function(){
+						$(".mostrarMais" + indice)
+							.css("text-decoration","underline")
+							.css("color","white")
+					
+					});
+					$("#lista").on("mouseout", ".mostrarMenos" + indice, function(){
+						$(".mostrarMenos" + indice)
+							.css("text-decoration","none")
+							.css("color","black")
+					
+					});
+					$("#lista").on("mouseout", ".mostrarMais" + indice, function(){
+						$(".mostrarMais" + indice)
+							.css("text-decoration","none")
+							.css("color","black")
+					
+					});
+				
+				});
+				
+		
+				$.each(receitas, function(indice, receita){
+						$("#preparo" + indice)
+							.css("text-align", "justify")
+							.css("font-family", "'Arapey', serif")
+						$(".mostrarMais" + indice).css("font-family", "'Patua One', cursive")
+						$(".mostrarMenos" + indice).css("font-family", "'Patua One', cursive")
+				});
+
+							
+			});
+		});
+	});
+
+	</script>
+</head>
+<body>
+	<div id="cabecalho">Receitas <img id="img-logo" src="logo.png"/></div>
+		
+
+	<div id="lista">
+	<img id="placa" src="placa.jpg"/>
+	</div>
+	
+</body>
+</html>

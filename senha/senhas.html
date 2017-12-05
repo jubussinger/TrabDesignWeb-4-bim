@@ -1,0 +1,85 @@
+
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<script src="./js/jquery.js"></script>
+		<link rel="stylesheet" type="text/css" href="./css/password.css" />
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+		<script>
+			function letra(carac){
+				if(carac.charCodeAt(0)>=65 && carac.charCodeAt(0)<=90 || carac.charCodeAt(0)>=97 && carac.charCodeAt(0)<=122)
+				{
+					return true;
+				}
+				return false;
+			}
+			function numero(carac){
+					
+				if(carac.charCodeAt(0)>=48 && carac.charCodeAt(0)<=57){
+					return true;
+				
+				}
+				return false;
+			}
+			function especial(carac){
+				if(carac.charCodeAt(0)>=33 && carac.charCodeAt(0)<=47 || carac.charCodeAt(0)>=58 && carac.charCodeAt(0)<=64 ){
+					return true;
+				}
+				return false;
+			}
+				
+			$.fn.verificar = function($campo,$status){
+			$campo.keydown(function (){	
+					var tam = $campo.val().length;
+					var tipo = 0;
+					var normal=false, num=false, esp=false;
+					for(var i=0;i<tam-1;i++){
+						var carac = $campo.val().charAt(i);
+						if(letra(carac)==true){
+							normal=true;
+						}
+						if(numero(carac)==true){
+							num=true;
+						}
+						if(especial(carac)==true){
+							esp=true;
+						}
+					}
+				
+					if(tam<8 && normal){
+						$status.removeClass();
+						$status.text("Muito fraca").addClass("alert alert-danger");
+					}
+					if(tam<8 && normal && num){
+						$status.removeClass();
+						$status.text("Fraca").addClass("alert alert-danger");
+					}
+					if(tam>=8 && normal && num){
+						$status.removeClass();
+						$status.text("Moderada").addClass("alert alert-warning");
+					}
+					if(tam>=8 && normal && num && esp){
+						$status.removeClass();
+						$status.text("Forte").addClass("alert alert-success");
+					}
+			});
+			}
+			
+			$(function(){
+				$.fn.verificar($(".senha"),$("#status"));
+				
+				if("alert alert-sucess"){
+				
+				}
+			});
+		</script>
+		</head>
+	<body>
+		<form class="form">
+			<label>Nome: </label><input type="nome" class="nome"/><br/>
+			<label> Senha: </label><input type="password" class="senha"/>
+			<p id="status"></p>
+		</form>
+	</body>
+</html>

@@ -1,0 +1,44 @@
+<html>
+<head>
+<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Spectral+SC" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="./css/endereco.css" />
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script>
+$(function(){
+	$("#cep").blur(function(){
+	var servico= "http://api.postmon.com.br/v1/cep/";
+	
+	var $xhr= $.get(servico+$("#cep").val());
+	
+	$xhr.done(function(endereco){
+		console.log(endereco);
+			$("#logradouro").val( endereco.logradouro);
+			$("#num").val( endereco.complemento);
+			$("#bairro").val( endereco.bairro);
+			$("#cidade").val( endereco.cidade);
+			$("#estado").val( endereco.estado);
+			
+			});
+		
+		});
+	});
+
+</script>
+</head>
+<body>
+	<form>
+		
+		<label class="nome"> Nome: </label>
+			<input type="text" id="nome"/>
+		<fieldset id="formulario">
+			<legend> Endereço</legend>
+			<input type="text" id="cep" placeholder="CEP"/><br/>
+			<input type="text" id="logradouro" placeholder="Logradouro"/><br/>
+			<input type="text" id="num" placeholder="Número"/><br/>
+			<input type="text" id="bairro" placeholder="Bairro"/><br/>
+			<input type="text" id="cidade" placeholder="Cidade"/><br/>
+			<input type="text" id="estado" placeholder="Estado"/><br/>
+		</fieldset>
+	</form>
+</body>
+</html>
